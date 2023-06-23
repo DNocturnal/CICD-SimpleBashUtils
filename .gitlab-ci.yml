@@ -1,0 +1,59 @@
+stages:
+  - build
+  - codestyle
+  - test
+  - deploy
+  - notify
+
+build:
+  stage: build
+  script:
+    - cd src/cat
+    - make
+    - cd ../grep
+    - make
+    - cd ../../
+    - chmod +x telegram.sh
+    - sh telegram.sh "success_build"
+  when: on_success
+  artifacts:
+    paths:
+    - src/
+    expire_in: 30 days
+
+codestyle:
+  stage: codestyle
+  script:
+    - cd src/cat
+    - make linter
+    - cd ../grep
+    - make linter
+    - cd ../../
+    - chmod +x telegram.sh
+    - sh telegram.sh "success_codestyle"
+    
+test:
+  stage: test
+  script:
+    - cd src/cat
+    - make test
+    - cd ../grep
+    - make test 
+    - cd ../../ 
+    - chmod +x telegram.sh
+    - sh telegram.sh "success_tests"
+
+deploy:
+   stage: deploy
+   script:
+     - chmod +x ./run.sh
+     - sh run.sh
+     - chmod +x telegram.sh
+     - sh telegram.sh "success_deploy"
+   when: manual
+
+notify_error:
+    stage: notify
+    script:
+        - sh telegram.sh "FAIL"
+    when: on_failure
