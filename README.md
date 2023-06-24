@@ -71,8 +71,6 @@ which is started automatically when changes are made.
     - This stage better be run manually rather than automatically
     - If you want, you can set it up for a specific branch of the repository only (master, release, etc.)
 
-`-` There you go. If you have any questions, run what I said slowly through your head. I'll be right back.
-
 
 ## Chapter II
 
