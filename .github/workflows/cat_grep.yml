@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check codestyle
-        uses: actions/check@v3
+        uses: actions/checkout@v3
       - name: Run linters
         run: |
          cd src/cat; make linter;
