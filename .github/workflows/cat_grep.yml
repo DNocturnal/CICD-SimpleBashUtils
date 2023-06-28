@@ -1,0 +1,58 @@
+name: CAT_GREP CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build cat and grep
+        uses: actions/checkout@v3
+      - name: Build util
+        run: |
+         cd ../src/cat; make; 
+         cd ../grep; make;
+
+  codestyle:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check codestyle
+        uses: actions/check@v3
+      - name: Run linters
+        run: |
+         cd ../src/cat; make linter;
+         cd ../grep; make linter;
+          
+  test:
+    needs: codestyle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check test
+        uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+         cd ../src/cat; make test;
+         cd ../grep; make test;
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: build cat and grep
+        uses: actions/checkout@v3
+      - name: Check codestyle
+        uses: actions/checkout@v3
+        with:
+          bundler-cache: true
+      - name: Run deploy
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          command: |
+           chmod +x ./run.sh
+           sh run.sh
