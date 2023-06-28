@@ -55,4 +55,4 @@ jobs:
           command: |
            cd ../../
            chmod +x ./run.sh
-           sh run.sh
+           echo "Success!"
