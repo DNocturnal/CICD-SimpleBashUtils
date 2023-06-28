@@ -50,9 +50,8 @@ jobs:
         with:
           bundler-cache: true
       - name: Run deploy
-        uses: D3rHase/ssh-command-action@v0.2.2
+        uses: actions/checkout@v3
         with:
           command: |
-           cd ../../
            chmod +x ./run.sh
            echo "Success!"
