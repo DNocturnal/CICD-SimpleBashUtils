@@ -25,7 +25,7 @@ jobs:
         uses: actions/check@v3
       - name: Run linters
         run: |
-         cd ../../src/cat; make linter;
+         cd src/cat; make linter;
          cd ../grep; make linter;
           
   test:
@@ -36,13 +36,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Run tests
         run: |
-         cd ../src/cat; make test;
+         cd src/cat; make test;
          cd ../grep; make test;
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: build cat and grep
         uses: actions/checkout@v3
